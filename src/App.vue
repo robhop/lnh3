@@ -54,7 +54,12 @@ export default {
                 "icon": "fa fa-check icon-state-success",
                 "disabled": true
               }
-            ]
+            ]            
+          },
+          {
+            "text": "Another item",
+            "icon": "fa fa-folder icon-state-danger",
+            "disabled": false
           }]
     };
   },
