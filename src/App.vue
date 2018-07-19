@@ -5,15 +5,14 @@
         <v-jstree :data="data" show-checkbox multiple allow-batch whole-row  @item-click="itemClick"></v-jstree>
       </div>
       <div id="right_col">
-        <Simple/>
+        <Simple v-bind:active="active"/>
       </div>    
     </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
-import Simple from './components/Simple';
+import Simple from './components/Simple'
 import VJstree from 'vue-jstree'
 
 export default {
@@ -24,37 +23,10 @@ export default {
   },
   data: function() {
     return {
+      active: [],
       data: [ {
-            "text": "Same but with checkboxes",
-            "children": [
-              {
-                "text": "initially selected",
-                "selected": true
-              },
-              {
-                "text": "custom icon",
-                "icon": "fa fa-warning icon-state-danger"
-              },
-              {
-                "text": "initially open",
-                "icon": "fa fa-folder icon-state-default",
-                "opened": true,
-                "children": [
-                  {
-                    "text": "Another node"
-                  }
-                ]
-              },
-              {
-                "text": "custom icon",
-                "icon": "fa fa-warning icon-state-warning"
-              },
-              {
-                "text": "disabled node",
-                "icon": "fa fa-check icon-state-success",
-                "disabled": true
-              }
-            ]            
+            "text": "Features",
+            "children": []            
           },
           {
             "text": "Another item",
@@ -65,9 +37,34 @@ export default {
   },
   methods: {
     itemClick (node) {
-      console.log(node.model.text + ' clicked !')
+      var self = this
+      var zoom = 8
+      var id = zoom + '/' + node.model.id
+
+      if(node.model.selected) {
+        this.$http.get('/api/cell/' + id).then(response => {
+          this.active.push({
+            id: node.model.id,
+            geojson:response.body
+          })
+        })        
+      } else {
+        var idx = _.findIndex(this.active, (a) => {return a.id == node.model.id;})
+        this.active.splice(idx,1)
+      }
+
     }
-  }
+  },
+  mounted: function () {
+    var self = this;
+    this.$http.get('/api/cell/').then(response => {
+
+      self.data[0].children = response.body.map((d) => { return {text: d.name, id: d.id};})
+  
+    }, response => {
+      // error callback
+    });
+  }  
 }
 </script>
 

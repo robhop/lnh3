@@ -3,8 +3,12 @@
 import Vue from 'vue'
 import App from './App'
 
-import "leaflet/dist/leaflet.css";
+import "leaflet/dist/leaflet.css"
+import VueResource from 'vue-resource'
+import VueLodash from 'vue-lodash'
 
+Vue.use(VueResource)
+Vue.use(VueLodash)
 
 Vue.config.productionTip = false
 
