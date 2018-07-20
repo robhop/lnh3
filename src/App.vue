@@ -24,14 +24,31 @@ export default {
   data: function() {
     return {
       active: [],
-      data: [ {
+      data: 
+      [ 
+        {
             "text": "Fylker",
             "children": []            
-          },
-          {
-            "text": "CTA",
-            "children": [] 
-          }]
+        },
+        {
+          "text": "CTA",
+          "children": [] 
+        },
+        {
+          "text": "Class",
+          "children": 
+          [
+            {
+              "text": "R",
+              "children": []
+            }
+          ]
+        },
+        {
+            "text": "Set 1",
+            "children": []            
+        },
+      ]
     };
   },
   methods: {
@@ -70,7 +87,15 @@ export default {
   
     }, response => {
       // error callback
-    });    
+    }); 
+
+    this.$http.get('/api/cell/search/class/R').then(response => {
+
+      self.data[2].children[0].children = response.body.map((d) => { return {text: d.name, id: d.id};})
+  
+    }, response => {
+      // error callback
+    });  
   }  
 }
 </script>

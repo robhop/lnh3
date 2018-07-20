@@ -1,6 +1,6 @@
 <template>
   <div style="height:100%" id="right_col">
-    <l-map :zoom="zoom" :center="center">
+    <l-map :zoom="zoom" :center="center" :bounds="bounds">
       <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
       <template v-for="item in active">
         <l-geo-json :geojson="item.geojson" :options="options"></l-geo-json>
@@ -24,6 +24,7 @@ export default {
   },
   data () {
     return {
+      bounds: null,
       zoom:8,
       center: L.latLng(60 ,7),
       url:'http://opencache.statkart.no/gatekeeper/gk/gk.open_gmaps?layers=topo4&zoom={z}&x={x}&y={y}',
@@ -41,6 +42,18 @@ export default {
           }
         }
       }      
+    }
+  },
+  watch: {
+    active(val) {
+      if(val.length > 0) {
+        var arr = this._.map(val, (v) => {return L.geoJson(v.geojson).getBounds(); })
+        //var gj = L.geoJson(val[val.length -1 ].geojson)
+        //console.dir(arr);
+        this.bounds = L.latLngBounds(arr)
+      }
+      
+
     }
   }
 }
