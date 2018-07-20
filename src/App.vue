@@ -25,13 +25,12 @@ export default {
     return {
       active: [],
       data: [ {
-            "text": "Features",
+            "text": "Fylker",
             "children": []            
           },
           {
-            "text": "Another item",
-            "icon": "fa fa-folder icon-state-danger",
-            "disabled": false
+            "text": "CTA",
+            "children": [] 
           }]
     };
   },
@@ -57,13 +56,21 @@ export default {
   },
   mounted: function () {
     var self = this;
-    this.$http.get('/api/cell/').then(response => {
+    this.$http.get('/api/cell/search/^fylke').then(response => {
 
       self.data[0].children = response.body.map((d) => { return {text: d.name, id: d.id};})
   
     }, response => {
       // error callback
     });
+    var self = this;
+    this.$http.get('/api/cell/search/^luftrom.*cta').then(response => {
+
+      self.data[1].children = response.body.map((d) => { return {text: d.name, id: d.id};})
+  
+    }, response => {
+      // error callback
+    });    
   }  
 }
 </script>

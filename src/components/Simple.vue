@@ -10,6 +10,7 @@
 </template>
 
 <script>
+
 import { LMap, LTileLayer, LGeoJson, LMarker } from 'vue2-leaflet'
 
 export default {
