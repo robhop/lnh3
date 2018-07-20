@@ -47,9 +47,9 @@ export default {
   watch: {
     active(val) {
       if(val.length > 0) {
-        var arr = this._.map(val, (v) => {return L.geoJson(v.geojson).getBounds(); })
-        //var gj = L.geoJson(val[val.length -1 ].geojson)
-        //console.dir(arr);
+        //var arr = this._.map(val, (v) => {return L.geoJson(v.geojson).getBounds(); })
+        var arr = this._.flatten(this._.map(val, (v) => { return [L.latLng(v.geojson.bbox[1],v.geojson.bbox[0]),L.latLng(v.geojson.bbox[3],v.geojson.bbox[2])]; }))
+        console.dir(arr);
         this.bounds = L.latLngBounds(arr)
       }
       
